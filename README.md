@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Prowider Mini Lead Distribution System (MongoDB Edition)
 
 A production-quality, transaction-safe, full-stack lead generation and fair distribution system. Designed using **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, and **MongoDB + Prisma ORM**.
@@ -156,3 +157,6 @@ The quota-reset endpoint `POST /api/webhooks/reset-quota` is protected against d
     "code": "DUPLICATE_LEAD"
   }
   ```
+=======
+# Lead-Distribution-System
+>>>>>>> e0254a9394eeb665e4a0cd5afbebe4d090734a90
