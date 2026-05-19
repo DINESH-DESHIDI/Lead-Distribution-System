@@ -1,4 +1,31 @@
 import { MongoClient } from "mongodb";
+import fs from "fs";
+import path from "path";
+
+// 🛠️ Pure Native Node.js .env File Parser to load cloud credentials
+try {
+  const envPath = path.resolve(process.cwd(), ".env");
+  if (fs.existsSync(envPath)) {
+    const envConfig = fs.readFileSync(envPath, "utf-8");
+    envConfig.split(/\r?\n/).forEach((line) => {
+      if (line.trim() && !line.startsWith("#")) {
+        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+        if (match) {
+          const key = match[1];
+          let value = match[2] || "";
+          if (value.startsWith('"') && value.endsWith('"')) {
+            value = value.slice(1, -1);
+          } else if (value.startsWith("'") && value.endsWith("'")) {
+            value = value.slice(1, -1);
+          }
+          process.env[key] = value.trim();
+        }
+      }
+    });
+  }
+} catch (e: any) {
+  console.warn("⚠️ Unable to parse .env file natively:", e.message);
+}
 
 const uri = process.env.DATABASE_URL || "mongodb://localhost:27017/prowider_db";
 const cleanUri = uri.split("?")[0];

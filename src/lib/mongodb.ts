@@ -26,6 +26,10 @@ if (process.env.NODE_ENV === "development") {
   clientPromise = client.connect();
 }
 
+// 🔐 Securely mask the database password in terminal logs for privacy
+const maskedUri = cleanUri.replace(/\/\/([^:]+):([^@]+)@/, "//$1:******@");
+console.log(`🔌 [MONGODB CLIENT] Initiating connection to: ${maskedUri}`);
+
 export async function getDb() {
   const conn = await clientPromise;
   
