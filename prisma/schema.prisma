@@ -1,0 +1,56 @@
+datasource db {
+  provider     = "mongodb"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Service {
+  id        String   @id @map("_id") // Keeps custom string ID 'srv-1'
+  name      String
+  createdAt DateTime @default(now())
+}
+
+model Provider {
+  id             String   @id @map("_id") // Keeps custom string ID 'prov-1'
+  name           String
+  monthlyQuota   Int      @default(10)
+  remainingQuota Int      @default(10)
+  totalAssigned  Int      @default(0)
+  createdAt      DateTime @default(now())
+}
+
+model Lead {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  customerName String
+  phoneNumber  String
+  city         String
+  description  String
+  serviceId    String
+  createdAt    DateTime @default(now())
+
+  @@unique([phoneNumber, serviceId])
+}
+
+model LeadAssignment {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  leadId     String   @db.ObjectId
+  providerId String
+  assignedAt DateTime @default(now())
+}
+
+model AllocationState {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  serviceId    String   @unique
+  currentIndex Int      @default(0)
+  updatedAt    DateTime @updatedAt
+}
+
+model WebhookEvent {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  eventId     String   @unique
+  processedAt DateTime @default(now())
+}
